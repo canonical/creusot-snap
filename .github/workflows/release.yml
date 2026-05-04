@@ -29,8 +29,16 @@ jobs:
           name: creusot-snap-${{ github.ref_name }}
           path: ${{ steps.snapcraft.outputs.snap }}
 
-      - name: Upload to Release
+      - name: Upload to Release (tagged/manual release)
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
         with:
           files: ${{ steps.snapcraft.outputs.snap }}
+
+      - name: Update latest release
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload latest ${{ steps.snapcraft.outputs.snap }} --clobber 2>/dev/null || \
+          gh release create latest ${{ steps.snapcraft.outputs.snap }} --title "latest" --notes "Latest build from master" --prerelease
