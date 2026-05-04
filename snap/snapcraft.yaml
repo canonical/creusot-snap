@@ -88,7 +88,7 @@ parts:
     plugin: rust
     source: https://github.com/creusot-rs/creusot.git
     source-type: git
-    source-commit: 8adabc837a0396cd181ffb8e67ad795dc5a92e94
+    source-commit: a0ae3291a8a10bdb4c09a259e8415f6e1e2465fe
     build-packages:
       - make
       - gcc
